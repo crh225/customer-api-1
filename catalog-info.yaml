@@ -1,0 +1,22 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: customer-api-1
+  description: This is the first attempt at generating a golden path repo/pipeline and service
+  tags:
+    - nodejs
+    - microservice
+    - golden-path
+  annotations:
+    github.com/project-slug: crh225/customer-api-1
+    backstage.io/kubernetes-id: customer-api-1
+    backstage.io/kubernetes-namespace: green-dev
+    backstage.io/kubernetes-cluster: shared-dev-cluster
+    argocd/app-name: customer-api-1
+spec:
+  type: service
+  lifecycle: experimental
+  owner: green
+  system: platform
+  providesApis: []
+  consumesApis: []

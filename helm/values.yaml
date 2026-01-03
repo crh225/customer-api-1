@@ -1,0 +1,65 @@
+replicaCount: 2
+
+image:
+  repository: ghcr.io/crh225/customer-api-1
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 3000
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /ready
+    port: 3000
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+serviceMonitor:
+  enabled: false  # Set to true after installing Prometheus Operator
+  interval: 30s
+  path: /metrics
+
+labels:
+  team: green
+  app.kubernetes.io/name: customer-api-1
+  app.kubernetes.io/part-of: green
+  app.kubernetes.io/managed-by: backstage
+
+# Istio configuration
+istio:
+  enabled: false  # Set to true to enable Istio ingress
+  domain: chrishouse.io
+  gateway: istio-ingress/main-gateway  # Hub gateway (cross-cluster routing)
+
+  # Preview environment configuration (set by preview workflow)
+  preview:
+    enabled: false
+    hostname: ""  # Will be set to {service}-pr-{number}-{team}.chrishouse.io
