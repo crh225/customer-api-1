@@ -1,6 +1,6 @@
 # customer-api-1
 
-This is the first attempt at generating a golden path repo/pipeline and service
+This is the first attempt at generating a golden path repo/pipeline and service.
 
 **Team:** green
 **Namespace:** green-dev
